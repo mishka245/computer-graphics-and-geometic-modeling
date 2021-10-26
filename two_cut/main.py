@@ -67,6 +67,15 @@ def my_approach(a, b, c, d):
     return False
 
 
+def ccw(a, b, c):
+    return (c.y - a.y) * (b.x - a.x) > (b.y - a.y) * (c.x - a.x)
+
+
+def google_approach(a, b, c, d):
+    # Return true if line segments AB and CD intersect
+    return ccw(a, c, d) != ccw(b, c, d) and ccw(a, b, c) != ccw(a, b, d)
+
+
 if __name__ == '__main__':
     result = my_approach(Point(3, 7), Point(4, 8), Point(6, 5), Point(9, 7))
     print(result)
