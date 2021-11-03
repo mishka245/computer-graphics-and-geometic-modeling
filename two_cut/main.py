@@ -14,6 +14,14 @@ class Point:
     def x(self, x):
         self._x = x
 
+    @property
+    def y(self):
+        return self._y
+
+    @y.setter
+    def y(self, y):
+        self._y = y
+
     def __str__(self):
         return f"({self.x}, {self.y})"
 
@@ -32,13 +40,21 @@ def my_approach(a, b, c, d):
 
     """
     calculate lines from cuts
-    y = kx + t
-    k = (y2-y1)/(x2-x1)
-    t = y - kx
+    if x1 != x2, than
+        y = kx + t
+        k = (y2-y1)/(x2-x1)
+        t = y - kx
+    otherwise,
+        x = x1 = x2 (k is infinity)
+    
     """
+    # TODO: Catch and process case when x1 == x2
+
+    # The line on the points a and b
     k1 = (b.y - a.y) / (b.x - a.x)
     t1 = a.y - k1 * a.x
 
+    # The line on the points c and d
     k2 = (d.y - c.y) / (d.x - c.x)
     t2 = c.y - k2 * c.x
 
@@ -47,12 +63,16 @@ def my_approach(a, b, c, d):
 
     """
     find out where if lines cross each other
-    if k1 == k2, lines does not cut each other
-    otherwise, x = (t2 - t1) / (k1 - k2)
+    if k1 == k2 and t1 != t2, lines does not cut each other
+    if k1 == k2 and t1 == t2, lines coincide each other
+    otherwise, x = (t2 - t1) / (k1 - k2)    
     """
 
     if k1 == k2:
-        return False
+        if t1 == t2 and (is_between(a, c, b) or is_between(a, d, b)):
+            return True
+        else:
+            return False
     x = (t2 - t1) / (k1 - k2)
     y = k1 * x + t1
     cross_point = Point(x, y)
@@ -68,6 +88,7 @@ def my_approach(a, b, c, d):
 
 
 def ccw(a, b, c):
+    # Source - https://stackoverflow.com/questions/26315401/explanation-of-ccw-algorithm
     return (c.y - a.y) * (b.x - a.x) > (b.y - a.y) * (c.x - a.x)
 
 
